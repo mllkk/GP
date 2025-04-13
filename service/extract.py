@@ -42,7 +42,7 @@ def extract_vulnerabilities(input_path: str) -> List[Dict[str, str]]:
     Returns:
         List[Dict[str, str]]: List of extracted vulnerabilities.
     """
-    output_path = "vulnerabilities.json"
+    output_path = "temp/vulnerabilities.json"
     logger = setup_logger()
     logger.info(f"Starting extraction: input={input_path}, output={output_path}")
 
