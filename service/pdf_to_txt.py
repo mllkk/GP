@@ -2,7 +2,7 @@ import PyPDF2
 import os
 import logging
 from datetime import datetime
-from extract import extract_vulnerabilities
+
 
 def setup_logger() -> logging.Logger:
     """
@@ -72,13 +72,3 @@ def pdf_to_text(pdf_path: str) -> str:
 
     logger.info("PDF-to-text conversion completed successfully.")
     return output_txt
-
-if __name__ == "__main__":
-    import os
-    # Find the first .txt file in temp/
-    temp_dir = "temp"
-    txt_files = [f for f in os.listdir(temp_dir) if f.lower().endswith(".txt")]
-    if not txt_files:
-        raise FileNotFoundError(f"No .txt files found in {temp_dir}")
-    input_txt = os.path.join(temp_dir, txt_files[0])
-    extract_vulnerabilities(input_txt)
