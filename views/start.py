@@ -5,7 +5,8 @@ import shutil
 import time
 from PyPDF2 import PdfReader
 from service.pdf_to_txt import pdf_to_text
-from service.extract import extract_vulnerabilities
+from data.scripts.syn_scan import syn_scan
+from data.scripts.dns_cache_snooping import dns_cache_snooping_scan
 
 quick_ascii = r"""
  $$$$$$\            $$\           $$\       
@@ -61,28 +62,22 @@ def validate_ip(ip):
     return True
 
 def main():
-    show_intro()
+    show_intro()  
     file_path, ip_address = get_user_input()
-
+    
     if file_path is None or ip_address is None:
-        print("Please fix errors and try again.")
+        print("Lütfen hataları giderip tekrar deneyin.")
         return
 
     print(f"PDF file: {file_path}")
-    print(f"IP address: {ip_address}")
-
-    # Convert PDF → TXT in temp/
+    print(f"IP addres: {ip_address}")
+    
+    # PDF dosyasını TXT formatına dönüştür ve temp klasörüne kaydet
     pdf_to_text(file_path)
-
-    # Now pick up the first .txt in temp/ and run extractor
-    temp_dir = "temp"
-    txt_files = [f for f in os.listdir(temp_dir) if f.lower().endswith(".txt")]
-    if not txt_files:
-        raise FileNotFoundError(f"No .txt files found in {temp_dir}")
-    input_txt = os.path.join(temp_dir, txt_files[0])
-
-    extract_vulnerabilities(input_txt)
-
+    syn_scan(ip_address) 
+    dns_cache_snooping_scan(ip_address)
+    
+    # Burada PDF işleme veya IP doğrulama sonrası diğer işlemler eklenebilir.
 
 if __name__ == "__main__":
     main()
