@@ -10,6 +10,8 @@ import logging
 from logging.handlers import TimedRotatingFileHandler
 from datetime import datetime
 
+
+
 # 1) Log klasörü ve handler ayarları
 LOG_DIR = "log"
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -17,19 +19,19 @@ os.makedirs(LOG_DIR, exist_ok=True)
 # 2) Handler: her gece yarısı dönecek, 7 gün yedek tutacak
 handler = TimedRotatingFileHandler(
     filename=os.path.join(LOG_DIR, datetime.now().strftime("%Y-%m-%d") + ".log"),
-    when="midnight",
-    interval=1,
-    backupCount=7,
+    when="midnight",      # gece yarısı rotate
+    interval=1,           # 1 gün
+    backupCount=7,        # son 7 günü sakla
     encoding="utf-8",
-    utc=False
+    utc=False             # yerel zamana göre döndür
 )
-handler.suffix = "%Y-%m-%d"
+handler.suffix = "%Y-%m-%d"  # yedek dosya adlarında tarih formatı
 
 # 3) Formatter ve logger
 formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
 handler.setFormatter(formatter)
 
-logger = logging.getLogger()
+logger = logging.getLogger()  # root logger
 logger.setLevel(logging.INFO)
 logger.addHandler(handler)
 
@@ -116,21 +118,14 @@ def main():
     server_header = get_http_server_header(host, port, use_ssl)
     if server_header is None:
         logger.critical("Failed to retrieve Server header; exiting.")
-        sys.exit(1)
+        sys.exit(2)
 
     version = parse_tomcat_version(server_header)
     if not version:
         logger.critical("Could not determine Tomcat version; exiting.")
-        sys.exit(1)
+        sys.exit(3)
 
     logger.info(f"Detected Tomcat version: {version}")
-
-    if is_version_eol(version):
-        logger.critical(f"Version {version} is EOL (<=5.5) — vulnerability present!")
-        sys.exit(1)
-    else:
-        logger.info(f"Version {version} is supported; no vulnerability.")
-        sys.exit(0)
 
 if __name__ == "__main__":
     main()
