@@ -1,0 +1,44 @@
+[
+  {
+    "id": "90317",
+    "owasp_category": "A07: Identification & Authentication Failures",
+    "name": "SSH Weak Algorithms",
+    "description": "The SSH service on the target system supports weak encryption algorithms (e.g., arcfour, arcfour128, arcfour256), which are considered insecure against modern cryptographic attacks. Their use poses a risk to the confidentiality and integrity of authentication processes.",
+    "filepath": "scripts/ssh_weak_algos.py"
+  },
+  {
+    "id": "171340",
+    "owasp_category": "A06: Vulnerable and Outdated Components",
+    "name": "Apache Tomcat SEoL",
+    "description": "The detected Apache Tomcat version is no longer supported by the vendor, meaning it does not receive security updates. This exposes the system to known vulnerabilities that can be easily exploited by attackers.",
+    "filepath": "scripts/tomcat_version.py"
+  },
+  {
+    "id": "12217",
+    "owasp_category": "A10: Server-Side Request Forgery (SSRF)",
+    "name": "DNS Cache Snooping",
+    "description": "DNS cache snooping allows an attacker to determine whether specific domain names have been resolved by the DNS server, potentially revealing internal services. This can be leveraged in SSRF attacks to exploit trust relationships within the network.",
+    "filepath": "scripts/dns_cache_snooping.py"
+  },
+  {
+    "id": "11219",
+    "owasp_category": "A09: Security Logging & Monitoring Failures",
+    "name": "Nessus SYN Scanner",
+    "description": "SYN scans conducted on the network may go unnoticed due to insufficient logging and monitoring mechanisms. This lack of visibility allows attackers to probe for vulnerabilities without triggering alerts or detection.",
+    "filepath": "scripts/syn_scan.py"
+  },
+  {
+    "id": "61708",
+    "owasp_category": "A07: Identification & Authentication Failures",
+    "name": "VNC Weak Password",
+    "description": "The VNC service on the target system is using weak or easily guessable passwords. This makes it vulnerable to brute-force attacks, potentially allowing unauthorized users to gain remote desktop access.",
+    "filepath": "scripts/vnc_scan.py"
+  },
+  {
+    "id": "51192",
+    "owasp_category": "A08: Software and Data Integrity Failures",
+    "name": "SSL Self-Signed Certificate, SSL Cannot Be Trusted",
+    "description": "The system uses self-signed or untrusted SSL/TLS certificates. Such configurations can make encrypted communications susceptible to man-in-the-middle attacks due to the lack of a verified trust chain.",
+    "filepath": "scripts/ssl_scan.py"
+  }
+]

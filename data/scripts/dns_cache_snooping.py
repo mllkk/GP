@@ -1,6 +1,6 @@
 import subprocess
 import re
-from service.result_manager import save_result
+from result_manager import save_result
 
 def dns_cache_snooping_scan(target_ip):
     VULN_ID    = "DNS-001"
