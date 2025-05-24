@@ -3,8 +3,11 @@ import re
 import subprocess
 import shutil
 import time
+from pathlib import Path
 from PyPDF2 import PdfReader
 from service.pdf_to_txt import pdf_to_text
+from service.extract import extract_vulnerabilities
+from data.match_scripts import match_scripts_with_vulnerabilities,run_matched_python_scripts
 
 quick_ascii = r"""
  $$$$$$\            $$\           $$\       
@@ -71,7 +74,27 @@ def main():
     print(f"IP addres: {ip_address}")
     
     # PDF dosyasını TXT formatına dönüştür ve temp klasörüne kaydet
-    pdf_to_text(file_path)
+    output_path = pdf_to_text(file_path)
+    json = extract_vulnerabilities(output_path)
+
+    script_path = Path("scripts.json")
+    vuln_path = Path(json)
+    output_path = Path("matched_results.json")
+
+    results = match_scripts_with_vulnerabilities(script_path, vuln_path)
+
+    # Terminale yaz
+    for res in results:
+        print(f"Vulnerability '{res['vulnerability_title']}' matched with script '{res['script_name']}' (Similarity: {res['similarity_score']})")
+
+    # JSON dosyasına kaydet
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=4, ensure_ascii=False)
+
+    print("\n✅ Eşleştirme sonuçları 'matched_results.json' dosyasına kaydedildi.")
+
+    target_ip = input("Lütfen hedef IP adresini girin: ")
+    run_matched_python_scripts(output_path, script_path, target_ip)
     
     # Burada PDF işleme veya IP doğrulama sonrası diğer işlemler eklenebilir.
 
